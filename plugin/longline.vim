@@ -1,3 +1,13 @@
+" longline.vim - Avoid long lines.
+" Maintainer:	Nate Soares <http://so8r.es>
+" Version:		1.0
+" License:		The same as vim itself. (See |license|)
+
+if exists("g:loaded_longline") || &cp || v:version < 700
+	finish
+endif
+let g:loaded_longline = 1
+
 if !exists('g:longline_matchgroup')
 	let g:longline_matchgroup = 'ErrorMsg'
 endif
@@ -8,15 +18,15 @@ endif
 
 if !exists('g:longline_filetype_map')
 	let g:longline_filetype_map = {
-				\ 'java':     100,
-				\ 'html':      -1,
-				\ 'soy':       -1,
-				\ 'text':      -1,
-				\ 'markdown':  -1,
 				\ 'help':      -1,
+				\ 'html':      -1,
+				\ 'java':     100,
+				\ 'markdown':  -1,
+				\ 'soy':       -1,
+				\ 'story':     -1,
+				\ 'text':      -1,
 				\}
 endif
-
 
 function! s:LineMatch(type, num)
 	" Highlight lines of a certain length with a certain highlight group.
