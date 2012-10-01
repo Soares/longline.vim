@@ -6,72 +6,72 @@ License: Same terms as Vim itself (see |license|)
 
 =============================================================================
 CONTENTS                                        *longline-contents*
-    1. Intro........................................|longline-intro|
-    2. Options......................................|longline-options|
-    3. Commands.....................................|longline-commands|
-    4. Functions....................................|longline-functions|
-    6. About........................................|longline-about|
+	    1. Intro........................................|longline-intro|
+	    2. Options......................................|longline-options|
+	    3. Commands.....................................|longline-commands|
+	    4. Functions....................................|longline-functions|
+	    6. About........................................|longline-about|
 
 =============================================================================
-INTRODUCTION                                    *longline-intro*
+INTRODUCTION					*longline-intro*
 
 Vim buffer utilities. Light your buffers up.
 
 =============================================================================
-OPTIONS                                         *longline-options*
+OPTIONS						*longline-options*
 
-                                                *longline-matchgroup*
-g:longline_matchgroup        The matchgroup to highlight the long parts of lines
-                        with. {ErrorMsg} by default.
+						*longline-matchgroup*
+g:longline_matchgroup		The matchgroup to highlight the long parts of lines
+				with. ErrorMsg by default.
 
-                                                *longline-maxlength*
-g:longline_maxlength        The length that is too long. 80 by default.
+						*longline-maxlength*
+g:longline_maxlength		The length that is too long. 80 by default.
 
-                                                *longline-filetype_map*
-g:longline_filetype_map        A dictionary of filetypes
-
-=============================================================================
-COMMANDS                                        *longline-commands*
-
-                                                *longline-:LongLine*
-:LongLine                Toggles the highlighting on long lines.
+						*longline-filetype_map*
+g:longline_filetype_map		A dictionary of filetypes
 
 =============================================================================
-FUNCTIONS                                       *longline-functions*
+COMMANDS					*longline-commands*
 
-                                                *longline-MaxLength*
-longline#MaxLength()        The maximum length of a line. Takes one optional
-                        parameter specifying the line length. A negative value
-                        signals that no line is too long, a positive value
-                        signals that the defaults should be used. If the
-                        defaults should be used or the parameter is ommitted
-                        then the longline_filetype_map and longline_maxlength
-                        will be used.
+						*longline-:LongLine*
+:LongLine			Toggles the highlighting on long lines.
 
-                                                *longline-Show*
-longline#MaxLength()        The maximum length of a line. Takes one optional
+=============================================================================
+FUNCTIONS					*longline-functions*
 
-longline#Show()                Highlight parts of lines that are too long.
-                        Long lines are not highlighted by default. To
-                        highlight long lines by default you'll want a command
-                        like the following >
+						*longline-MaxLength*
+longline#MaxLength()		The maximum length of a line. Takes one optional
+				parameter specifying the line length. A negative value
+				signals that no line is too long, a positive value
+				signals that the defaults should be used. If the
+				defaults should be used or the parameter is ommitted
+				then the longline_filetype_map and longline_maxlength
+				will be used.
+
+						*longline-Show*
+longline#MaxLength()		The maximum length of a line. Takes one optional
+
+longline#Show()			Highlight parts of lines that are too long.
+				Long lines are not highlighted by default. To
+				highlight long lines by default you'll want a command
+				like the following >
                                 augroup longlines
                                         autocmd BufEnter * :LongLine
                                 augroup end
                                 
 <
 
-                                                *longline-Hide*
+						*longline-Hide*
 longline#Hide()                Stop highlighting long parts of lines.
 
-                                                *longline-Toggle*
+						*longline-Toggle*
 longline#Toggle()        Toggle highlighting on long parts of lines.
 
 =============================================================================
-ABOUT                                           *longline-about*
+ABOUT						*longline-about*
 
 Grab the latest version or report a bug on GitHub:
 
 http://github.com/Soares/longline.vim
 
- vim:tw=78:ts=8:sw=0:noet:ft=help:norl:
+ vim:tw=78:ts=8:sw=0:sts=8:noet:ft=help:norl:
