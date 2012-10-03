@@ -81,6 +81,11 @@ Status Line                 *longline-Exists()* *longline-statusline*
 		set statusline+=%*
 <
 	or something of the sort to your statusline.
+
+	NOTE: If you want to conditionally add the warning to your statusline
+	dependent upon whether longline exists, don't use the |exists()|
+	function. |longline#Exists()| is autoloaded, so it won't exist until
+	you call it. Use |try| instead.
         
 longline#MaxLength()                            *longline-MaxLength*
 
