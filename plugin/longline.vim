@@ -1,81 +1,38 @@
 " longline.vim - Avoid long lines.
-" Maintainer:	Nate Soares <http://so8r.es>
-" Version:		1.0
-" License:		The same as vim itself. (See |license|)
-" GetLatestVimScripts: 4246 1 :AutoInstall: longline.zip
+"
+" Author:       Nate Soares <http://so8r.es>
+" Version:      1.1
+" License:      The same as vim itself. (See |license|)
+" GetLatestVimScripts: 4246 1 :AutoInstall: terminus.zip
 
-if exists("g:loaded_longline") || &cp || v:version < 700
+if exists('g:loaded_longline') || &cp || v:version < 700
 	finish
 endif
 let g:loaded_longline = 1
 
-if !exists('g:longline_matchgroup')
-	let g:longline_matchgroup = 'ErrorMsg'
+command! HideLongLines call longline#Hide()
+command! ShowLongLines call longline#Show()
+command! ToggleLongLines call longline#Toggle()
+
+" Clear out existing longline autocommands.
+augroup longline
+	autocmd!
+augroup end
+
+" Automatically wrap text. On by default.
+if !exists('g:longline#autotw') | let g:longline#autotw = 1 | endif
+if g:longline#autotw
+	augroup longline
+		autocmd BufEnter ?* if longline#WrapText()
+					\| let &l:tw=longline#MaxLength()
+					\| endif
+	augroup end
 endif
 
-if !exists('g:longline_maxlength')
-	let g:longline_maxlength = 80
+" Automatically highlight long lines. Off by default.
+if !exists('g:longline#autohl') | let g:longline#autohl = 0 | endif
+if g:longline#autohl
+	augroup longline
+		autocmd BufEnter * ShowLongLines
+	augroup end
 endif
-
-if !exists('g:longline_filetype_map')
-	let g:longline_filetype_map = {
-				\ 'help':      -1,
-				\ 'html':      -1,
-				\ 'java':     100,
-				\ 'markdown':  -1,
-				\ 'soy':       -1,
-				\ 'story':     -1,
-				\ 'text':      -1,
-				\}
-endif
-
-function! s:LineMatch(type, num)
-	" Highlight lines of a certain length with a certain highlight group.
-	exe "match ".a:type." '\\%>".a:num."v.\\+'"
-endfunction
-
-
-function! longline#MaxLength()
-	let num = a:0 > 0 ? a:1 : 0
-	if num == 0 | let num = get(g:longline_filetype_map, &ft) | endif
-	if num == 0 | let num = g:longline_maxlength | endif
-	if num < 1 | return -1 | endif
-	return num
-endfunction
-
-function! longline#Show()
-	" Highlight lines of or beyond a certain length.
-	call longline#Hide()
-	let num = call('longline#MaxLength', a:000)
-	if num > 0
-		call s:LineMatch(g:longline_matchgroup, num)
-		let b:longline_highlighted = num
-	endif
-endfunction
-
-function! longline#Exists()
-	" True iff. a line exists that is too long.
-	let num = call('longline#MaxLength', a:000)
-	if num < 1 | return 0 | endif
-	return search('\%>'.num.'v.', 'nw') != 0
-endfunction
-
-function! longline#Hide()
-	" Remove the highlighting on long lines.
-	if exists('b:longline_highlighted')
-		if b:longline_highlighted > 0
-			call s:LineMatch('NONE', b:longline_highlighted)
-		endif
-		unlet b:longline_highlighted
-	endif
-endfunction
-
-function! longline#Toggle()
-	" Toggle long line highlighting
-	if exists('b:longline_highlighted') && b:longline_highlighted > 0
-		call longline#Hide()
-	else
-		call call('longline#Show', a:000)
-	endif
-endfunction
-command! LongLines call longline#Toggle()
