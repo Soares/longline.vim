@@ -53,22 +53,23 @@ longline#NeverWrap(filetype)                    *longline-NeverWrap()*
 =============================================================================
 COMMANDS                                        *longline-commands*
 
-:ShowLongLines                                  *longline-ShowLongLines*
+:LongLineShow                                   *longline-LongLineShow*
 
 	Highlights the parts of lines in a file that are too long.
 
-:HideLongLines                                  *longline-HideLongLines*
+:LongLineHide                                   *longline-LongLineHide*
 
 	Turns off long line highlighting.
 
-:ToggleLongLines                                  *longline-ToggleLongLines*
+:LongLineToggle                                 *longline-LongLineToggle*
 
 	Toggles long line highlighting.
 
 =============================================================================
 EXTRAS                                          *longline-extras*
 
-Status Line                 *longline-Exists()* *longline-statusline*
+Status Line                                     *longline-statusline*
+						*longline-Exists()*
 
 	Longline does not change your status line, but it does provide hooks
 	for you to add a long line warning to your status line yourself.
@@ -85,25 +86,31 @@ Status Line                 *longline-Exists()* *longline-statusline*
 	dependent upon whether longline exists, don't use the |exists()|
 	function. |longline#Exists()| is autoloaded, so it won't exist until
 	you call it. Use |try| instead.
-        
+
 longline#MaxLength()                            *longline-MaxLength*
 
 	Your scripts may call this function to determine the longest allowable
 	line for a filetype. You may pass a filetype as an argument. If you
 	don't, the current filetype will be used.
 
-	To highlight long lines in your files, we recommend either turning
-	highlighing on for all files: >
+=============================================================================
+MAPPINGS                                        *longline-mappings*
+
+	Longline does not change your mappings. However, we recommend that you
+	either turn on highlighting for all files: >
 
 	let longline#autohl = 1
 <
 	or creating a mapping to toggle long line highlighting: >
 
-	noremap <leader>l :ToggleLongLines<CR>
+	" Mnemonic: longline
+	noremap <leader>ll :LongLineToggle<CR>
+	noremap <leader>ln :LongLineNext<CR>
+	noremap <leader>lp :LongLinePrev<CR>
 <
 
 =============================================================================
-ABOUT						*longline-about*
+ABOUT                                           *longline-about*
 
 Grab the latest version or report a bug on GitHub:
 

@@ -1,7 +1,7 @@
-# LongLine
+# Longline
 # Avoid long lines
 
-LongLine helps you with long lines in vim.
+Longline helps you with long lines in vim.
 
 * Highlight lines that are too long.
 * Vary the definition of "too long" by file type.

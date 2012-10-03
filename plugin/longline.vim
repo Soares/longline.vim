@@ -12,9 +12,11 @@ let g:loaded_longline = 1
 
 
 " Commands:
-command! HideLongLines call longline#Hide()
-command! ShowLongLines call longline#Show()
-command! ToggleLongLines call longline#Toggle()
+command! LongLineHide call longline#Hide()
+command! LongLineShow call longline#Show()
+command! LongLineToggle call longline#Toggle()
+command! LongLineNext call longline#Next()
+command! LongLinePrev call longline#Prev()
 
 
 " Autocommands:

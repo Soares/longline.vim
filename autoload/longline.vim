@@ -32,10 +32,18 @@ if !exists('g:longline#tw')
 endif
 
 
+" The regex for the nth column of a line.
+" Args:
+"   {number} num the column to search for.
+function! s:Regex(num)
+	return '\m\%>'.a:num.'v'
+endfunction
+
+
 " Highlight lines of a certain length with a certain highlight group.
 " @private
 function! s:LineMatch(type, num)
-	exe 'match '.a:type.' "\m\%>'.a:num.'v.\+"'
+	exe 'match '.a:type.' "'.s:Regex(a:num).'.\+"'
 endfunction
 
 
@@ -92,13 +100,29 @@ endfunction
 
 " Finds out whether a long line exists in the file.
 " Args:
-"   {number?} optional max line width. Deteced from the filetype if not given.
+"   {number?} optional max line width. Detected from the filetype if not given.
 " Returns:
 "   1 if a too-long line exists, 0 otherwise.
 function! longline#Exists(...)
 	let l:num = a:0 > 0 ? a:1 : longline#MaxLength()
 	if l:num <= 0 | return 0 | endif
-	return search('\m\%>'.l:num.'v.', 'nw') != 0
+	return search(s:Regex(l:num+1), 'nw') != 0
+endfunction
+
+" Jumps the cursor to the next long line.
+" Args:
+"   {number?} optional max line width. Detected from the filetype if not given.
+function! longline#Next(...)
+	let l:num = a:0 > 1 ? a:1 : longline#MaxLength()
+	call search(s:Regex(l:num).'.\+$', 'w')
+endfunction
+
+" Jumps the cursor to the previous long line.
+" Args:
+"   {number?} optional max line width. Detected from the filetype if not given.
+function! longline#Prev(...)
+	let l:num = a:0 > 1 ? a:1 : longline#MaxLength()
+	call search(s:Regex(l:num).'.\+$', 'wb')
 endfunction
 
 
@@ -114,7 +138,7 @@ endfunction
 
 " Highlights lines beyond a certain length.
 " Args:
-"   {number?} optional max line width. Deteced from the filetype if not given.
+"   {number?} optional max line width. Detected from the filetype if not given.
 function! longline#Show(...)
 	call longline#Hide()
 	let l:num = a:0 > 0 ? a:1 : longline#MaxLength()
@@ -126,7 +150,7 @@ endfunction
 
 " Toggles long line highlighting
 " Args:
-"   {number?} optional max line width. Deteced from the filetype if not given.
+"   {number?} optional max line width. Detected from the filetype if not given.
 function! longline#Toggle(...)
 	if exists('b:longline_highlight') && b:longline_highlight > 0
 		call longline#Hide()
