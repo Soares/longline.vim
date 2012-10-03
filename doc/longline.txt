@@ -1,5 +1,4 @@
-*longline.txt*  Avoid Long Lines.
-*longline* *LongLine*
+*longline.txt*  Avoid Long Lines.               *longline*
 
 Author:  Nate Soares <http://so8r.es/>
 License: Same terms as Vim itself (see |license|)
