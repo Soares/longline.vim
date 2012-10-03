@@ -1,11 +1,3 @@
-" longline.vim - Avoid long lines.
-"
-" Author:       Nate Soares <http://so8r.es>
-" Version:      1.1
-" License:      The same as vim itself. (See |license|)
-" GetLatestVimScripts: 4246 1 :AutoInstall: terminus.zip
-
-
 if exists('g:longline#autoloaded') || &cp
 	finish
 endif
@@ -17,12 +9,10 @@ if !exists('g:longline#matchgroup')
 	let g:longline#matchgroup = 'ErrorMsg'
 endif
 
-
 " How long is 'too long'.
 if !exists('g:longline#maxlength')
 	let g:longline#maxlength = 80
 endif
-
 
 " Filetypes that don't conform to the default 'too long' rule.
 if !exists('g:longline#exceptions')
@@ -32,7 +22,6 @@ if !exists('g:longline#exceptions')
 				\ 'html': 0,
 				\ }
 endif
-
 
 " A dictionary of filetype => whether text should be wrapped.
 " By default, if longline#MaxLength is non-zero text will be wrapped.
@@ -59,6 +48,12 @@ function! longline#AddException(filetype, ...)
 	let g:longline#exceptions[a:filetype] = a:0 > 0 ? a:1 : 0
 endfunction
 
+" Remove an exception.
+" Args:
+"   {string} filetype to remove the exception for.
+function! longline#RemoveException(filetype)
+	try | call remove(g:longline#exceptions, a:filetype) | endtry
+endfunction!
 
 " Never wrap text on a given filetype.
 " Args:
@@ -66,14 +61,6 @@ endfunction
 function! longline#NeverWrap(filetype)
 	let g:longline#tw[a:filetype] = 0
 endfunction
-
-
-" Remove an exception.
-" Args:
-"   {string} filetype to remove the exception for.
-function! longline#RemoveException(filetype)
-	try | call remove(g:longline#exceptions, a:filetype) | endtry
-endfunction!
 
 
 " Find the maximum allowable line length.
@@ -125,7 +112,6 @@ function! longline#Hide()
 	endif
 endfunction
 
-
 " Highlights lines beyond a certain length.
 " Args:
 "   {number?} optional max line width. Deteced from the filetype if not given.
@@ -137,7 +123,6 @@ function! longline#Show(...)
 		let b:longline_highlight = l:num
 	endif
 endfunction
-
 
 " Toggles long line highlighting
 " Args:

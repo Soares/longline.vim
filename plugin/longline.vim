@@ -10,12 +10,16 @@ if exists('g:loaded_longline') || &cp || v:version < 700
 endif
 let g:loaded_longline = 1
 
+
+" Commands:
 command! HideLongLines call longline#Hide()
 command! ShowLongLines call longline#Show()
 command! ToggleLongLines call longline#Toggle()
 
-" Clear out existing longline autocommands.
+
+" Autocommands:
 augroup longline
+	" Clears existing longline autocmds
 	autocmd!
 augroup end
 
