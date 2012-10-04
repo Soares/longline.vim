@@ -30,20 +30,16 @@ use this to disable the plugin completely: >
 <
 
 						*g:longline_autohl*
-
 Whether or not to automatically highlight the ends of lines that are too long.
 Default: 0.
 
 						*g:longline_autotw*
-
 Whether or not to automatically set |textwrap|. Default: 1.
 
 						*g:longline_maxlength*
-
 The maximum line length. Default: 80. '0' denotes no limit.
 
 						*g:longline_exceptions*
-
 Set exceptions for filetypes that don't conform to |g:longline_maxlength|. For
 example, the following: >
 	let g:longline_exceptions={'java': 100, 'markdown': 0}
@@ -61,7 +57,6 @@ If you don't agree with those defaults, either override them in
 <
 
 						*g:longline_tw*
-
 A dictionary denoting which filetypes should have |textwrap| on. By default
 all filetypes will have |textwrap| set, but any filetype with a zero or
 negative value in this dict will not have textwrap set. For example: >
@@ -93,7 +88,6 @@ EXTRAS                                          *longline-extras*
 
 Status Line                                     *longline-statusline*
 						*longline#Exists()*
-
 Longline does not change your status line, but it does provide hooks for you
 to add a long line warning to your status line yourself.  The function
 'longline#Exists()' returns non-zero if a long line exists in the file. We
