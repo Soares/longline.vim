@@ -24,25 +24,25 @@ Longline allows you to:
 =============================================================================
 CONFIGURATION                                   *longline-config*
 
-                                                *g:loaded_longline*
+						*g:loaded_longline*
 use this to disable the plugin completely: >
         let g:loaded_longline = 1
 <
 
-                                                *g:longline_autohl*
+						*g:longline_autohl*
 
 Whether or not to automatically highlight the ends of lines that are too long.
 Default: 0.
 
-                                                *g:longline_autotw*
+						*g:longline_autotw*
 
 Whether or not to automatically set |textwrap|. Default: 1.
 
-                                                *g:longline_maxlength*
+						*g:longline_maxlength*
 
 The maximum line length. Default: 80. '0' denotes no limit.
 
-                                                *g:longline_exceptions*
+						*g:longline_exceptions*
 
 Set exceptions for filetypes that don't conform to |g:longline_maxlength|. For
 example, the following: >
@@ -60,7 +60,7 @@ If you don't agree with those defaults, either override them in
 	let g:longline_default_exceptions={}
 <
 
-                                                *g:longline_tw*
+						*g:longline_tw*
 
 A dictionary denoting which filetypes should have |textwrap| on. By default
 all filetypes will have |textwrap| set, but any filetype with a zero or
@@ -73,19 +73,19 @@ ensures that |textwrap| will never be set by longline in markdown files.
 =============================================================================
 COMMANDS                                        *longline-commands*
 
-                                                *:LongLineNext*
+						*:LongLineNext*
 Jumps the cursor to the next line that is too long.
 
-                                                *:LongLinePrev*
+						*:LongLinePrev*
 Jumps the cursor to the previous line that is too long.
 
-                                                *:LongLineShow*
+						*:LongLineShow*
 Highlights the parts of lines in a file that are too long.
 
-                                                *:LongLineHide*
+						*:LongLineHide*
 Turns off long line highlighting.
 
-                                                *:LongLineToggle*
+						*:LongLineToggle*
 Toggles long line highlighting.
 
 =============================================================================
@@ -105,7 +105,7 @@ recommend adding >
 <
 or something of the sort to your statusline.
 
-                                                *longline#MaxLength*
+						*longline#MaxLength*
 Your scripts may call this function to determine the longest allowable line
 for a filetype. You may pass a filetype as an argument. If you don't, the
 current filetype will be used.
