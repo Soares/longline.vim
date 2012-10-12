@@ -54,6 +54,12 @@ function! longline#exists(...)
 endfunction
 
 
+" Legacy function from before function naming was normalized.
+function! longline#Exists(...)
+	return call('longline#exists', a:000)
+endfunction
+
+
 " Creates a string suited for a statusline flag.
 " @return {string}
 function! longline#statusline()
