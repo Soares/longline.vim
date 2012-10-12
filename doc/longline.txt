@@ -1,111 +1,116 @@
-*longline.txt*  Avoid Long Lines.               *longline*
+*longline.txt*  Avoid Long Lines.			*longline*
 
 Author:  Nate Soares <http://so8r.es/>
 License: Same terms as Vim itself (see |license|)
 
 =============================================================================
-CONTENTS                                        *longline-contents*
-	    1. Introduction................................|longline-intro|
-	    2. Configuration...............................|longline-config|
-	    3. Commands....................................|longline-commands|
-	    4. Extras......................................|longline-extras|
-	    5. About.......................................|longline-about|
+CONTENTS					*longline-contents*
+	    1. Introduction..............................|longline-intro|
+	    2. Configuration.............................|longline-config|
+	    3. Commands..................................|longline-commands|
+	    3. Status line...............................|longline-statusline|
+	    4. Extras....................................|longline-extras|
+	    5. About.....................................|longline-about|
 
 =============================================================================
-INTRODUCTION                                    *longline-intro*
+INTRODUCTION					*longline-intro*
 
 Longline allows you to:
 
-- Specify by filetype how long is too long
-- Automatically set |textwidth| correctly
-- Highlight lines that are too long
-- Place a long line warning in your statusline
+* Specify by filetype how long is too long
+* Automatically set |textwidth| correctly
+* Highlight lines that are too long
+* Place a long line warning in your statusline
 
 =============================================================================
-CONFIGURATION                                   *longline-config*
+CONFIGURATION					*longline-config*
 
 						*g:loaded_longline*
 use this to disable the plugin completely: >
-        let g:loaded_longline = 1
+	let g:loaded_longline = 1
 <
 
 						*g:longline_autohl*
 Whether or not to automatically highlight the ends of lines that are too long.
-Default: 0.
+Disabled by default.
 
 						*g:longline_autotw*
-Whether or not to automatically set |textwrap|. Default: 1.
+Whether or not to automatically set |textwrap|. Enabled by default.
 
 						*g:longline_maxlength*
 The maximum line length. Default: 80. '0' denotes no limit.
 
 						*g:longline_exceptions*
 Set exceptions for filetypes that don't conform to |g:longline_maxlength|. For
-example, the following: >
+example, the following allows java to be 100 characters long and turns
+warnings off for markdown files: >
 	let g:longline_exceptions={'java': 100, 'markdown': 0}
 <
-Allows java lines to be 100 characters before warnings are issued, and turns
-long line warnings off for markdown. Setting '0' means that no line is too
-long. Setting a negative number means that the default should be used.
+A zero value means that no line is too long. A negative value means that the
+default should be used.
 
-This dict will be merged with g:longline_default_exceptions, which is: >
-	let g:longline_default_exceptions={'text'; 0, 'html': 0, 'help': 78}
-<
-If you don't agree with those defaults, either override them in
-|g:longline_exceptions| or clear the default exceptions: >
-	let g:longline_default_exceptions={}
-<
+This dict will be merged with |g:longline_default_exceptions|.
 
-						*g:longline_tw*
-A dictionary denoting which filetypes should have |textwrap| on. By default
-all filetypes will have |textwrap| set, but any filetype with a zero or
-negative value in this dict will not have textwrap set. For example: >
-	let g:longline_tw={'markdown': 0}
-<
-ensures that |textwrap| will never be set by longline in markdown files.
+					*g:longline_default_exceptions*
+The default longline exceptions: >
+	{'text': 0, 'html': 0, 'help': 78}
+< You should generally change |g:longline_exceptions| instead.
+
+						*g:longline_noautotw*
+A list of filetypes which should never be affected by longline's
+auto-textwrapping.
 
 
 =============================================================================
-COMMANDS                                        *longline-commands*
+COMMANDS					*longline-commands*
 
-						*:LongLineNext*
-Jumps the cursor to the next line that is too long.
+:LongLineNext					*:LongLineNext*
+	Jumps the cursor to the next line that is too long.
 
-						*:LongLinePrev*
+:LongLinePrev					*:LongLinePrev*
 Jumps the cursor to the previous line that is too long.
 
-						*:LongLineShow*
+:LongLineShow					*:LongLineShow*
 Highlights the parts of lines in a file that are too long.
 
-						*:LongLineHide*
+:LongLineHide					*:LongLineHide*
 Turns off long line highlighting.
 
-						*:LongLineToggle*
+:LongLineToggle					*:LongLineToggle*
 Toggles long line highlighting.
 
 =============================================================================
-EXTRAS                                          *longline-extras*
+STATUSLINE					*longline-statusline*
 
-Status Line                                     *longline-statusline*
-						*longline#Exists()*
-Longline does not change your status line, but it does provide hooks for you
-to add a long line warning to your status line yourself.  The function
-'longline#Exists()' returns non-zero if a long line exists in the file. We
-recommend adding >
-
-        set statusline+=%#WarningMsg#
-        set statusline+=%{longline#Exists()?'[…]':''}
-        set statusline+=%*
+						*longline#statusline()*
+This function returns a status line flag depending upon whether or not there
+are lines that are too long in the file. Specifically, it displays '[…]' if
+long lines exist and '' otherwise. Add it to your statusline as follows: >
+	set statusline+=%#WarningMsg#
+	set statusline+=%{longline#statusline()}
+	set statusline+=%*
 <
-or something of the sort to your statusline.
 
-						*longline#MaxLength*
+=============================================================================
+EXTRAS						*longline-extras*
+
+						*longline#exists()*
+If you would prefer a different format, or if you would like to use the
+presence of long lines in a more complex statusline flag, use this function.
+It returns true if and only if a long line exists in the file. In fact, you
+can replicate |longline#statusline()| with the following: >
+	set statusline+=%#WarningMsg#
+	set statusline+=%{longline#exists()?'[…]':''}
+	set statusline+=%*
+< You are encouraged to tweak this to your needs.
+
+						*longline#maxlength*
 Your scripts may call this function to determine the longest allowable line
 for a filetype. You may pass a filetype as an argument. If you don't, the
 current filetype will be used.
 
 =============================================================================
-MAPPINGS                                        *longline-mappings*
+MAPPINGS					*longline-mappings*
 
 Longline does not change your mappings. However, we recommend that you
 either turn on highlighting for all files: >
@@ -117,9 +122,11 @@ or creating a mapping to toggle long line highlighting: >
 	noremap <leader>ln :LongLineNext<CR>
 	noremap <leader>lp :LongLinePrev<CR>
 <
+If you like these mappings, you can turn them on with |g:longline_automap|.
+You're encouraged to customize your mappings to your own taste.
 
 =============================================================================
-ABOUT                                           *longline-about*
+ABOUT						*longline-about*
 
 Grab the latest version or report a bug on GitHub:
 
