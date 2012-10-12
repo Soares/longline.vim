@@ -80,7 +80,7 @@ augroup end
 " Automatically wrap text.
 if g:longline_autotw
 	augroup longline
-		autocmd BufEnter ?*
+		autocmd FileType *
 				\	if longline#wraptext()
 				\|		let &l:tw=longline#maxlength()
 				\|	endif
