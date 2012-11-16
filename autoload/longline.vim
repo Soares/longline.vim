@@ -1,21 +1,18 @@
-if exists('g:longline#autoloaded') || &cp
-	finish
-endif
-let g:longline#autoloaded = 1
-
-
 " The regex for the nth column of a line.
 " @param {number} num The column to search for.
+" @return {string} The regex.
 " @private
-function! s:regex(num)
-	return '\m\%>'.a:num.'v'
+function! s:regex_col(num)
+	return '\v%>'.a:num.'v'
 endfunction
 
 
-" Highlight lines of a certain length with a certain highlight group.
+" The regex for the nth column of a line and everything thereafter.
+" @param {number} num The column to search for.
+" @return {string} The regex.
 " @private
-function! s:linematch(type, num)
-	exe 'match '.a:type.' "'.s:regex(a:num).'.\+"'
+function! s:regex_all(num)
+	return s:regex_col(num) . '.+'
 endfunction
 
 
@@ -50,20 +47,7 @@ endfunction
 function! longline#exists(...)
 	let l:num = a:0 > 0 ? a:1 : longline#maxlength()
 	if l:num <= 0 | return 0 | endif
-	return search(s:regex(l:num+1), 'nw') != 0
-endfunction
-
-
-" Legacy function from before function naming was normalized.
-function! longline#Exists(...)
-	return call('longline#exists', a:000)
-endfunction
-
-
-" Creates a string suited for a statusline flag.
-" @return {string}
-function! longline#statusline()
-	return longline#exists() ? '[…]' : ''
+	return search(s:regex_col(l:num+1), 'nw') != 0
 endfunction
 
 
@@ -71,7 +55,7 @@ endfunction
 " @param {number?} Max line width. Detected from filetype if ommitted.
 function! longline#next(...)
 	let l:num = a:0 > 1 ? a:1 : longline#maxlength()
-	call search(s:regex(l:num).'.\+$', 'w')
+	call search(s:regex_col(l:num).'.+$', 'w')
 endfunction
 
 
@@ -79,17 +63,15 @@ endfunction
 " @param {number?} Max line width. Detected from filetype if ommitted.
 function! longline#prev(...)
 	let l:num = a:0 > 1 ? a:1 : longline#maxlength()
-	call search(s:regex(l:num).'.\+$', 'wb')
+	call search(s:regex_col(l:num).'.+$', 'wb')
 endfunction
 
 
 " Removes the highlighting on long lines.
 function! longline#hide()
-	if exists('b:longline_highlight')
-		if b:longline_highlight > 0
-			call s:linematch('NONE', b:longline_highlight)
-		endif
-		unlet b:longline_highlight
+	if exists('b:longline_match')
+		call deletematch(b:longline_match)
+		unlet b:longline_match
 	endif
 endfunction
 
@@ -100,8 +82,8 @@ function! longline#show(...)
 	call longline#hide()
 	let l:num = a:0 > 0 ? a:1 : longline#maxlength()
 	if l:num > 0
-		call s:linematch(g:longline_matchgroup, l:num)
-		let b:longline_highlight = l:num
+		let l:regex = s:regex_all(l:num)
+		let b:longline_match = addmatch(g:longline_matchgroup, l:regex)
 	endif
 endfunction
 
@@ -109,7 +91,7 @@ endfunction
 " Toggles long line highlighting
 " @param {number?} Max line width. Detected from filetype if ommitted.
 function! longline#toggle(...)
-	if exists('b:longline_highlight') && b:longline_highlight > 0
+	if exists('b:longline_match')
 		call longline#hide()
 	else
 		call call('longline#show', a:000)

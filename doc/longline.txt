@@ -9,8 +9,8 @@ CONTENTS					*longline-contents*
 	    2. Configuration.............................|longline-config|
 	    3. Commands..................................|longline-commands|
 	    4. Status line...............................|longline-statusline|
-	    5. Mappings..................................|longline-mappings|
-	    6. Extras....................................|longline-extras|
+	    5. Functions.................................|longline-functions|
+	    6. Mappings..................................|longline-mappings|
 	    7. About.....................................|longline-about|
 
 =============================================================================
@@ -86,13 +86,42 @@ Toggles long line highlighting.
 =============================================================================
 STATUSLINE					*longline-statusline*
 
-						*longline#statusline()*
-This function returns '[…]' if the file has lines that are too long and ''
-otherwise. It is ideal for use in a statusline. You can add it as follows: >
+Longline does not change your status line, but it does provide hooks for you
+to add longline warnings to your status line manually.
+
+You are encouraged to write your own statusline function using
+|longline#exists()| if you prefer different formatting.
+
+longline#status#flag()				*longline#status#flag()*
+	An alias for |longline#status#warning()|. If any other statusline
+	states are added, longline#status#flag() will return the first
+	non-empty flag in decreasing order of severity.
+
+longline#status#warning()			*longline#status#warning()*
+	[…]	if the file has lines that are too long.
+	Used as follows:
+>
+		set statusline+=%#WarningMsg#
+		set statusline+=%{longline#status#warning()}
+		set statusline+=%*
+<
+
+=============================================================================
+FUNCTIONS					*longline-extras*
+
+						*longline#exists()*
+This function returns true if a long line exists in the file. It can be used
+in various scripts or to make your own flavor of statusline flag. For example,
+to emulate |longline#statusline()|, do >
 	set statusline+=%#WarningMsg#
-	set statusline+=%{longline#statusline()}
+	set statusline+=%{longline#exists()?'[…]':''}
 	set statusline+=%*
-< If you would prefer a different format, see |longline#exists()|.
+<
+
+						*longline#maxlength*
+Your scripts may call this function to determine the longest allowable line
+for a filetype. You may pass a filetype as an argument. If you don't, the
+current filetype will be used.
 
 =============================================================================
 MAPPINGS					*longline-mappings*
@@ -109,23 +138,6 @@ or creating a mapping to toggle long line highlighting: >
 <
 If you like these mappings you can turn them on with |g:longline_automap|.
 You're encouraged to customize your mappings to your own taste.
-
-=============================================================================
-EXTRAS						*longline-extras*
-
-						*longline#exists()*
-This function returns true if a long line exists in the file. It can be used
-in various scripts or to make your own flavor of statusline flag. For example,
-to emulate |longline#statusline()|, do >
-	set statusline+=%#WarningMsg#
-	set statusline+=%{longline#exists()?'[…]':''}
-	set statusline+=%*
-<
-
-						*longline#maxlength*
-Your scripts may call this function to determine the longest allowable line
-for a filetype. You may pass a filetype as an argument. If you don't, the
-current filetype will be used.
 
 =============================================================================
 ABOUT						*longline-about*
