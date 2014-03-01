@@ -16,53 +16,42 @@ CONTENTS					*longline-contents*
 =============================================================================
 INTRODUCTION					*longline-intro*
 
-Longline allows you to:
+LongLine detects lines that are too long. It helps you:
 
-* Specify by filetype how long is too long
-* Automatically set |textwidth| correctly
-* Highlight lines that are too long
-* Place a long line warning in your statusline
+* Jump between overlong lines
+* Highlight the overflowing parts of long lines
+* Add a flag to your statusline when a line is too long
+
+The length of lines allowed is controlled by the 'textwidth' setting, which is
+buffer-local. Remember that you can control line wrapping using the t format
+option. See |fo-table|.
 
 =============================================================================
 CONFIGURATION					*longline-config*
 
 						*g:loaded_longline*
-use this to disable the plugin completely: >
+use this to disable the plugin completely:
+>
 	let g:loaded_longline = 1
 <
+
 
 						*g:longline_autohl*
 Whether or not to automatically highlight the ends of lines that are too long.
 Disabled by default.
 
-						*g:longline_autotw*
-Whether or not to automatically set |textwrap|. Enabled by default.
-
-						*g:longline_maxlength*
-The maximum line length. Default: 80. '0' denotes no limit.
-
-						*g:longline_exceptions*
-Set exceptions for filetypes that don't conform to |g:longline_maxlength|. For
-example, the following allows java to be 100 characters long and turns
-warnings off for markdown files: >
-	let g:longline_exceptions={'java': 100, 'markdown': 0}
-<
-A zero value means that no line is too long. A negative value means that the
-default should be used.
-
-This dict will be merged with |g:longline_default_exceptions|.
-
-					*g:longline_default_exceptions*
-The default longline exceptions: >
-	{'text': 0, 'html': 0, 'help': 78}
-< You should generally change |g:longline_exceptions| instead.
-
-						*g:longline_noautotw*
-A list of filetypes which should never be affected by longline's
-auto-textwrapping.
-
 						*g:longline_automap*
 Makes the default key bindings. See |longline-mappings|. Disabled by default.
+
+						*g:longline_defcmds*
+Whether or not to define the longline commands. Enabled by default. Use this
+to prevent the commands from being defined if (for example) you want to give
+the commands different names.
+
+						*g:longline_matchgroup*
+The matchgroup which matches the overflowing parts of long lines. It is set to
+'Error' by default. See |group-name|. For angrier (red background) long
+lines, try setting this parameter to 'ErrorMsg'.
 
 
 =============================================================================
@@ -93,9 +82,8 @@ You are encouraged to write your own statusline function using
 |longline#exists()| if you prefer different formatting.
 
 longline#status#flag()				*longline#status#flag()*
-	An alias for |longline#status#warning()|. If any other statusline
-	states are added, longline#status#flag() will return the first
-	non-empty flag in decreasing order of severity.
+	Returns the most severe active flag. Currently, this is a future-proof
+	alias for |longline#status#warning()|.
 
 longline#status#warning()			*longline#status#warning()*
 	[…]	if the file has lines that are too long.
@@ -112,16 +100,12 @@ FUNCTIONS					*longline-extras*
 						*longline#exists()*
 This function returns true if a long line exists in the file. It can be used
 in various scripts or to make your own flavor of statusline flag. For example,
-to emulate |longline#statusline()|, do >
+emulate |longline#status#warning()|, do
+>
 	set statusline+=%#WarningMsg#
 	set statusline+=%{longline#exists()?'[…]':''}
 	set statusline+=%*
 <
-
-						*longline#maxlength*
-Your scripts may call this function to determine the longest allowable line
-for a filetype. You may pass a filetype as an argument. If you don't, the
-current filetype will be used.
 
 =============================================================================
 MAPPINGS					*longline-mappings*
