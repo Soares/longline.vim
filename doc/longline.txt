@@ -113,15 +113,14 @@ emulate |longline#status#warning()|, do
 =============================================================================
 MAPPINGS					*longline-mappings*
 
-Longline does not change your mappings. However, we recommend that you
-either turn on highlighting for all files: >
-	let longline#autohl = 1
-<
-or creating a mapping to toggle long line highlighting: >
-	" Mnemonic: longline
-	noremap <leader>ll :LongLineToggle<CR>
-	noremap <leader>ln :LongLineNext<CR>
-	noremap <leader>lp :LongLinePrev<CR>
+Longline does not change your mappings, by default. You're encouraged to add
+your own. Here's an example mapping:
+>
+	noremap <unique> <leader>ln :LongLineNext<CR>
+	noremap <unique> <leader>lp :LongLinePrev<CR>
+	noremap <unique> <leader>ll :LongLineToggle<CR>
+	noremap <unique> <leader>ls :LongLineShow<CR>
+	noremap <unique> <leader>lh :LongLineHide<CR>
 <
 If you like these mappings you can turn them on with |g:longline_automap|.
 You're encouraged to customize your mappings to your own taste.

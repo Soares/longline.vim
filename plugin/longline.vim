@@ -56,12 +56,15 @@ endif
 " Make the default key mappings under <leader>l. Mnemonic: 'longline'.
 " The leader letter can be configured via g:longline_automap.
 if !empty(g:longline_automap)
-	let s:k = g:longline_automap
-	let s:k = type(s:k) == type('') ? s:k : '<leader>l'
-	execute 'noremap <unique> <leader>'.s:k.'n call longline#next()'
-	execute 'noremap <unique> <leader>'.s:k.'p call longline#prev()'
-	execute 'noremap <unique> <leader>'.s:k.'l call longline#toggle()'
-	execute 'noremap <unique> <leader>'.s:k.'s call longline#show()'
-	execute 'noremap <unique> <leader>'.s:k.'h call longline#hide()'
-	unlet s:k
+	function! s:coerce(target, default)
+		return type(a:target) == type(a:default) ? a:target : a:default
+	endfunction
+	let s:map = 'noremap <unique> <silent>'
+	let s:prefix = '<leader>' . s:coerce(g:longline_automap, 'l')
+
+	execute s:map s:prefix.'n :call longline#next()<CR>'
+	execute s:map s:prefix.'p :call longline#prev()<CR>'
+	execute s:map s:prefix.'l :call longline#toggle()<CR>'
+	execute s:map s:prefix.'s :call longline#show()<CR>'
+	execute s:map s:prefix.'h :call longline#hide()<CR>'
 endif
