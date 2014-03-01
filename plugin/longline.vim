@@ -1,6 +1,6 @@
 " longline.vim - Avoid long lines.
 " Author:       Nate Soares <http://so8r.es>
-" Version:      2.0.0
+" Version:      2.1.0
 " License:      The same as vim itself. (See |license|)
 " GetLatestVimScripts: 4246 1 :AutoInstall: terminus.zip
 
@@ -53,9 +53,15 @@ if g:longline_autohl
 endif
 
 
-" Enable the default key mappings.
-if g:longline_automap
-	noremap <leader>ll :LongLineToggle<CR>
-	noremap <leader>ln :LongLineNext<CR>
-	noremap <leader>lp :LongLinePrev<CR>
+" Make the default key mappings under <leader>l. Mnemonic: 'longline'.
+" The leader letter can be configured via g:longline_automap.
+if !empty(g:longline_automap)
+	let s:k = g:longline_automap
+	let s:k = type(s:k) == type('') ? s:k : '<leader>l'
+	execute 'noremap <unique> <leader>'.s:k.'n call longline#next()'
+	execute 'noremap <unique> <leader>'.s:k.'p call longline#prev()'
+	execute 'noremap <unique> <leader>'.s:k.'l call longline#toggle()'
+	execute 'noremap <unique> <leader>'.s:k.'s call longline#show()'
+	execute 'noremap <unique> <leader>'.s:k.'h call longline#hide()'
+	unlet s:k
 endif

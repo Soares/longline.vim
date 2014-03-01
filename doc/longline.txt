@@ -42,6 +42,9 @@ Disabled by default.
 
 						*g:longline_automap*
 Makes the default key bindings. See |longline-mappings|. Disabled by default.
+This can be set either to 1 (to enable the mappings under <leader>l) or to
+a string (in which case the mappings will be enabled under
+<leader>{g:longline_automap}).
 
 						*g:longline_defcmds*
 Whether or not to define the longline commands. Enabled by default. Use this
