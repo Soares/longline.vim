@@ -36,7 +36,11 @@ endfunction
 " Removes the highlighting on long lines.
 function! longline#hide()
 	if exists('b:longline_match')
-		call matchdelete(b:longline_match)
+		try
+			call matchdelete(b:longline_match)
+		catch /E803:/
+			" Do nothing
+		endtry
 		unlet b:longline_match
 	endif
 endfunction
