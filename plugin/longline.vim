@@ -1,12 +1,9 @@
-" longline.vim - Avoid long lines.
+" longline.vim - avoid long lines.
 " Author:       Nate Soares <http://so8r.es>
-" Version:      2.1.0
+" Version:      3.0.0
 " License:      The same as vim itself. (See |license|)
 " GetLatestVimScripts: 4246 1 :AutoInstall: terminus.zip
 
-if exists('g:loaded_longline') || &cp || v:version < 700
-	finish
-endif
 let g:loaded_longline = 1
 
 
@@ -15,32 +12,52 @@ if !exists('g:longline_matchgroup')
 	let g:longline_matchgroup = 'ErrorMsg'
 endif
 
-
-" Whether or not to define the LongLine commands.
-if !exists('g:longline_defcmds')
-	let g:longline_defcmds = 1
-endif
-
-
 " Whether or not to automatically highlight long lines.
 if !exists('g:longline_autohl')
 	let g:longline_autohl = 0
 endif
-
 
 " Whether or not to make the default key mappings.
 if !exists('g:longline_automap')
 	let g:longline_automap = 0
 endif
 
+" Whether or not to make the default key mappings.
+if !exists('g:longline_defcmds')
+	let g:longline_defcmds = 1
+endif
+
 
 " Commands:
-if g:longline_defcmds
-	command! LongLineHide call longline#hide()
-	command! LongLineShow call longline#show()
-	command! LongLineToggle call longline#toggle()
-	command! LongLineNext call longline#next()
-	command! LongLinePrev call longline#prev()
+if g:longline_defcmds > 0
+  function! s:run(cmd)
+    if a:cmd ==# 'show'
+      call longline#show()
+    elseif a:cmd ==# 'hide'
+      call longline#hide()
+    elseif a:cmd ==# 'toggle' || a:cmd ==# ''
+      call longline#toggle()
+    elseif a:cmd ==# 'next'
+      call longline#next()
+    elseif a:cmd ==# 'prev' || a:cmd == 'previous'
+      call longline#prev()
+    else
+      echohl ErrorMsg
+      echomsg "Unknown LongLine command:" a:cmd
+      echohl None
+    endif
+  endfunction
+  if exists(':LongLine') == 2
+    echomsg 'overwriting command :LongLine'
+  endif
+  " The arg may be any of: show, hide, toggle, next, prev(ious), and may be
+  " empty. If empty, 'toggle' is used.
+  command! -nargs=? LongLine call s:run(<q-args>)
+elseif g:longline_defcmds < 0
+  if exists(':LongLine') == 2
+    echomsg 'deleting command :LongLine'
+    delcommand LongLine
+  endif
 endif
 
 
@@ -52,19 +69,18 @@ if g:longline_autohl
 	augroup end
 endif
 
+noremap <silent> <Plug>longline#next :call longline#next()<CR>
+noremap <silent> <Plug>longline#prev :call longline#prev()<CR>
+noremap <silent> <Plug>longline#toggle :call longline#toggle()<CR>
+noremap <silent> <Plug>longline#show :call longline#show()<CR>
+noremap <silent> <Plug>longline#hide :call longline#hide()<CR>
 
 " Make the default key mappings under <leader>l. Mnemonic: 'longline'.
 " The leader letter can be configured via g:longline_automap.
-if !empty(g:longline_automap)
-	function! s:coerce(target, default)
-		return type(a:target) == type(a:default) ? a:target : a:default
-	endfunction
-	let s:map = 'noremap <unique> <silent>'
-	let s:prefix = '<leader>' . s:coerce(g:longline_automap, 'l')
-
-	execute s:map s:prefix.'n :call longline#next()<CR>'
-	execute s:map s:prefix.'p :call longline#prev()<CR>'
-	execute s:map s:prefix.'l :call longline#toggle()<CR>'
-	execute s:map s:prefix.'s :call longline#show()<CR>'
-	execute s:map s:prefix.'h :call longline#hide()<CR>'
+if g:longline_automap
+	nmap <leader>ln <Plug>longline#next
+	nmap <leader>lp <Plug>longline#prev
+	nmap <leader>lt <Plug>longline#toggle
+	nmap <leader>ls <Plug>longline#show
+	nmap <leader>lh <Plug>longline#hide
 endif

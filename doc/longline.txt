@@ -42,9 +42,6 @@ Disabled by default.
 
 						*g:longline_automap*
 Makes the default key bindings. See |longline-mappings|. Disabled by default.
-This can be set either to 1 (to enable the mappings under <leader>l) or to
-a string (in which case the mappings will be enabled under
-<leader>{g:longline_automap}).
 
 						*g:longline_defcmds*
 Whether or not to define the longline commands. Enabled by default. Use this
@@ -113,17 +110,25 @@ emulate |longline#status#warning()|, do
 =============================================================================
 MAPPINGS					*longline-mappings*
 
-Longline does not change your mappings, by default. You're encouraged to add
-your own. Here's an example mapping:
+Longline does not change your mappings, by default. Instead, it provides the
+following |<Plug>| mappings:
 >
-	noremap <unique> <leader>ln :LongLineNext<CR>
-	noremap <unique> <leader>lp :LongLinePrev<CR>
-	noremap <unique> <leader>ll :LongLineToggle<CR>
-	noremap <unique> <leader>ls :LongLineShow<CR>
-	noremap <unique> <leader>lh :LongLineHide<CR>
+	<Plug>longline#next
+	<Plug>longline#prev
+	<Plug>longline#toggle
+	<Plug>longline#show
+	<Plug>longline#hide
 <
-If you like these mappings you can turn them on with |g:longline_automap|.
-You're encouraged to customize your mappings to your own taste.
+If you like the following mappings:
+>
+	nmap <leader>ln <Plug>longline#next
+	nmap <leader>lp <Plug>longline#prev
+	nmap <leader>ls <Plug>longline#show
+	nmap <leader>lh <Plug>longline#hide
+	nmap <leader>lt <Plug>longline#toggle
+<
+then set |g:longline_automap| to 1. You're encouraged to customize your
+mappings to your own taste using the plug mappings.
 
 =============================================================================
 ABOUT						*longline-about*
