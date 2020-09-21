@@ -35,7 +35,7 @@ if g:longline_defcmds > 0
   endif
   " The arg may be any of: show, hide, toggle, next, prev(ious), and may be
   " empty. If empty, 'toggle' is used.
-  command! -nargs=? LongLine call longline#run(<q-args>)
+  command! -nargs=? -complete=customlist,longline#complete LongLine call longline#run(<q-args>)
 elseif g:longline_defcmds < 0
   if exists(':LongLine') == 2
     echomsg 'deleting command :LongLine'
