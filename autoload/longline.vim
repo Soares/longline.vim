@@ -1,3 +1,21 @@
+function! longline#run(cmd)
+	if a:cmd ==# 'show'
+		call longline#show()
+	elseif a:cmd ==# 'hide'
+		call longline#hide()
+	elseif a:cmd ==# 'toggle' || a:cmd ==# ''
+		call longline#toggle()
+	elseif a:cmd ==# 'next'
+		call longline#next()
+	elseif a:cmd ==# 'prev' || a:cmd == 'previous'
+		call longline#prev()
+	else
+		echohl ErrorMsg
+		echomsg "Unknown LongLine command:" a:cmd
+		echohl None
+	endif
+endfunction
+
 " The regex for the nth column of a line.
 " @param {number} num The column to search for.
 " @return {string} The regex.

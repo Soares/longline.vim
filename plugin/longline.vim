@@ -30,29 +30,12 @@ endif
 
 " Commands:
 if g:longline_defcmds > 0
-  function! s:run(cmd)
-    if a:cmd ==# 'show'
-      call longline#show()
-    elseif a:cmd ==# 'hide'
-      call longline#hide()
-    elseif a:cmd ==# 'toggle' || a:cmd ==# ''
-      call longline#toggle()
-    elseif a:cmd ==# 'next'
-      call longline#next()
-    elseif a:cmd ==# 'prev' || a:cmd == 'previous'
-      call longline#prev()
-    else
-      echohl ErrorMsg
-      echomsg "Unknown LongLine command:" a:cmd
-      echohl None
-    endif
-  endfunction
   if exists(':LongLine') == 2
     echomsg 'overwriting command :LongLine'
   endif
   " The arg may be any of: show, hide, toggle, next, prev(ious), and may be
   " empty. If empty, 'toggle' is used.
-  command! -nargs=? LongLine call s:run(<q-args>)
+  command! -nargs=? LongLine call longline#run(<q-args>)
 elseif g:longline_defcmds < 0
   if exists(':LongLine') == 2
     echomsg 'deleting command :LongLine'
